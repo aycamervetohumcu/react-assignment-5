@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [movies, setMovies] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY`)
+      .then((response) => {
+        setMovies(response.data.results);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <h1>Movie Search</h1>
+      <input
+        type="text"
+        className="search-bar"
+        placeholder="Search movies..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <div className="movie-list">
+        {filteredMovies.map((movie) => (
+          <div key={movie.id} className="movie-card">
+            <h2>{movie.title}</h2>
+            <p>{movie.overview}</p>
+            <p>
+              <strong>Release Date:</strong> {movie.release_date}
+            </p>
+            <p>
+              <strong>Rating:</strong> {movie.vote_average}
+            </p>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;

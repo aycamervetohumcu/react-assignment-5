@@ -3,46 +3,25 @@ import axios from "axios";
 import "./App.css";
 
 const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY`)
+      .get("https://jsonplaceholder.typicode.com/posts") 
       .then((response) => {
-        setMovies(response.data.results);
+        setData(response.data);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-    <div className="app">
-      <h1>Movie Search</h1>
-      <input
-        type="text"
-        className="search-bar"
-        placeholder="Search movies..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <div className="movie-list">
-        {filteredMovies.map((movie) => (
-          <div key={movie.id} className="movie-card">
-            <h2>{movie.title}</h2>
-            <p>{movie.overview}</p>
-            <p>
-              <strong>Release Date:</strong> {movie.release_date}
-            </p>
-            <p>
-              <strong>Rating:</strong> {movie.vote_average}
-            </p>
-          </div>
+    <div>
+      <h1>Fetched Data</h1>
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>{item.title}</li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

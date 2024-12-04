@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import "./App.css";
 
 const App = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => {
-        setPosts(response.data); 
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []); 
-
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Fetched Data</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.body}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <header>
+        <h1>Seker Search</h1>
+      </header>
+      <div className="search-bar">
+        <input type="text" placeholder="Search for something..." />
+        <button>Search</button>
+      </div>
+      <div className="results">
+        <div className="result-item">
+          <h3>Example Result</h3>
+          <p>This is a description of the result.</p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -7,14 +7,22 @@ const App = () => {
   const [results, setResults] = useState([]);
 
   // Fetch movies from TMDB API
+
+
+
   const fetchMovies = async (searchTerm) => {
     const API_KEY = "0232633004c4e190221795fa76d24ecf"; // Replace this with your actual API key
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchTerm}`;
-    
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchTerm}`;    
+
+
+
     try {
       const response = await axios.get(url);
       setResults(response.data.results); // Update the state with API response
-    } catch (error) {
+    console.log(response.data.results)
+
+    } 
+    catch (error) {
       console.error("Error fetching data:", error);
     }
   };
